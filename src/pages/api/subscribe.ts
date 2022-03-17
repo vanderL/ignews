@@ -28,10 +28,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     let customerId = user.data.stripe_customer_id;
 
-    if (customerId) {
+    if (!customerId) {
       const stripeCustomer = await stripe.customers.create({
         email: session.user.email,
       });
+
+      console.log(stripeCustomer)
 
       await fauna.query(
         q.Update(
